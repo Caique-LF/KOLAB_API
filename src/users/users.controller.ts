@@ -8,11 +8,13 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreatUserDto } from './dtos/create-user-dtos';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dtos/update-user-dtos';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-guards';
 
 @ApiTags('users')
 @Controller('users')
@@ -30,6 +32,8 @@ export class UsersController {
     return this.userService.createUser(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get(':id')
   async findUser(@Param('id') id: string) {
     const user = await this.userService.findUser(id);
@@ -42,11 +46,15 @@ export class UsersController {
     return result;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get()
   async findAllUsers() {
     return this.userService.findAllUsers();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Put()
   @Put(':id')
   async updateUser(
@@ -56,6 +64,8 @@ export class UsersController {
     return this.userService.updateUser(id, updateUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   async delelteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
