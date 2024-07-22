@@ -69,4 +69,14 @@ export class UsersService {
 
     return this.UserRespository.findOne({ where: { id } });
   }
+
+  async deleteUser(id: string): Promise<void> {
+    const user = await this.UserRespository.findOne({ where: { id: id } });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    await this.UserRespository.delete({ id });
+  }
 }
