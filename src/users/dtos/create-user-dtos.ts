@@ -20,6 +20,8 @@ export class CreatUserDto {
 
   @IsOptional()
   @IsString()
-  @ApiPropertyOptional({})
+  @ApiPropertyOptional({
+    description: 'campo opcional, caso não queira informar por favor apague-o.',
+  })
   parentUserId?: string;
 }
