@@ -15,7 +15,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: ['dist/**/*.entity{.ts,.js}'],
       migrations: [],
       synchronize: true,
     }),
