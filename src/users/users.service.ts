@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatUserDto } from './dtos/create-user-dtos';
@@ -24,5 +24,25 @@ export class UsersService {
     });
 
     return this.UserRespository.save(user);
+  }
+
+  async findUser(id: string): Promise<User> {
+    const user = await this.UserRespository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    return user;
+  }
+
+  async findByUsername(username: string): Promise<User> {
+    const user = await this.UserRespository.findOneBy({ username });
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
   }
 }
