@@ -11,10 +11,10 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { CreatUserDto } from 'src/users/dtos/create-user-dtos';
 import { LocalAuthGuard } from './guards/local-guards';
-import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dtos/login-dtos';
-import { JwtAuthGuard } from './guards/jwt-guards';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -31,8 +31,6 @@ export class AuthController {
     return res.status(HttpStatus.OK).json({ user, token: token.acess_token });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @Post('register')
   async registerNewUser(@Body() createUserDto: CreatUserDto) {
     return this.authService.registerNewUser(createUserDto);
