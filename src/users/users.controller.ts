@@ -38,4 +38,9 @@ export class UsersController {
     const { ...result } = user;
     return result;
   }
+
+  @Get()
+  async findAllUsers() {
+    return this.userService.findAllUsers();
+  }
 }
