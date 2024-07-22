@@ -8,7 +8,7 @@ export class UpdateUserDto {
     description: 'Para atualizar um usuario deverá ser informado um nome.',
     example: 'João silva',
   })
-  name?: string;
+  username?: string;
 
   @IsOptional()
   @ApiPropertyOptional({

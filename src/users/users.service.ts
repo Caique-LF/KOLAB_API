@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreatUserDto } from './dtos/create-user-dtos';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/database/user.entity';
+import { UpdateUserDto } from './dtos/update-user-dtos';
 
 @Injectable()
 export class UsersService {
@@ -37,7 +38,7 @@ export class UsersService {
   }
 
   async findByUsername(username: string): Promise<User> {
-    const user = await this.UserRespository.findOneBy({ username });
+    const user = await this.UserRespository.findOne({ where: { username } });
 
     if (!user) {
       return null;
@@ -48,5 +49,24 @@ export class UsersService {
 
   async findAllUsers(): Promise<User[]> {
     return this.UserRespository.find();
+  }
+
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.UserRespository.findOne({ where: { id: id } });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    const transformedUpdateDto = {
+      ...updateUserDto,
+      parentUserId: updateUserDto.parentUserId
+        ? { id: updateUserDto.parentUserId }
+        : null,
+    };
+
+    await this.UserRespository.update({ id }, transformedUpdateDto);
+
+    return this.UserRespository.findOne({ where: { id } });
   }
 }

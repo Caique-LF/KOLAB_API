@@ -6,10 +6,12 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreatUserDto } from './dtos/create-user-dtos';
 import { ApiTags } from '@nestjs/swagger';
+import { UpdateUserDto } from './dtos/update-user-dtos';
 
 @ApiTags('users')
 @Controller('users')
@@ -42,5 +44,14 @@ export class UsersController {
   @Get()
   async findAllUsers() {
     return this.userService.findAllUsers();
+  }
+
+  @Put()
+  @Put(':id')
+  async updateUser(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.updateUser(id, updateUserDto);
   }
 }
