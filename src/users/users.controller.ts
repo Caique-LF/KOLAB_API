@@ -54,4 +54,11 @@ export class UsersController {
   async delelteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('/tree')
+  async findTree() {
+    return this.userService.findTree();
+  }
 }

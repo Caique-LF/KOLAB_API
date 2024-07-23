@@ -79,4 +79,32 @@ export class UsersService {
 
     await this.UserRespository.delete({ id });
   }
+
+  async findTree(): Promise<User[]> {
+    const users = await this.UserRespository.find();
+    return this.buildTree(users);
+  }
+
+  private buildTree(users: User[]): User[] {
+    const tree: User[] = [];
+
+    for (const user of users) {
+      user.children = [];
+    }
+
+    for (const user of users) {
+      if (user.parentUserId) {
+        for (const potentialParent of users) {
+          if (user.parentUserId.id === potentialParent.id) {
+            potentialParent.children.push(user);
+            break;
+          }
+        }
+      } else {
+        tree.push(user);
+      }
+    }
+
+    return tree;
+  }
 }

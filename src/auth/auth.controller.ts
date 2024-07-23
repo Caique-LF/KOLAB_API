@@ -27,7 +27,7 @@ export class AuthController {
     const { user } = req;
     const token = await this.authService.login(user);
 
-    res.cookie('acess_token', token.acess_token);
+    res.cookie('acess_token', token.acess_token, { httpOnly: true });
     return res.status(HttpStatus.OK).json({ user, token: token.acess_token });
   }
 
