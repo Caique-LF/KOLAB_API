@@ -1,73 +1,135 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# PROJETO API KOLAB BACKEND
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![Logo Kolab](./images/kolab-logo.png)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Esse projeto é um api desenvolvida para meios de avaliação em processo seletivo, nele você encotrará funcionalidades para autenticação de usuários e acesso a endpoints protegidos.
 
-## Description
+### REQUISITOS
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Antes de rodar a API, certifique-se de que você tem os seguintes requisitos instalados
 
-## Installation
+• Node.js (versão 14.x ou superior, preferencialmente a LTS)
+
+• NPM ou gerenciador de pacotes de sua escolha.
+
+• Banco de dados (Por exemplo MYSQL ou POSTGRESQL)
+
+## Configuração do ambiente
+
+#### 1. Clone o repositório
 
 ```bash
-$ npm install
+git clone https://github.com/Caique-LF/KOLAB_API.git
 ```
 
-## Running the app
+#### 2. Instale as dependências
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Test
+#### 3. Configure as variaveis de ambiente em um arquivo .env na raiz do projeto
 
 ```bash
-# unit tests
-$ npm run test
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_NAME=
+DB_PASSWORD=
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+JWT_SECRET=
 ```
 
-## Support
+## RODAR O PROJETO
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### 1. Inicie o servidor
 
-## Stay in touch
+```bash
+npm run start
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+ou para desenvolvimento com automatic reload
 
-## License
+```bash
+npm run start:dev
+```
 
-Nest is [MIT licensed](LICENSE).
+## AUTENTICAÇÃO
+
+### Registro de Usuário
+
+Para registrar um novo usuário, envie um POST para o endpoin `/auth/register` com o corpo da requisição como objeto json com o seguinte formato:
+
+```json
+{
+  "username": "João silva",
+  "password": "jao1234"
+}
+```
+
+Você também pode informar o idenitificador do superior(pai) caso tenha interesse de obter a arvore hierarquica.
+
+```json
+{
+  "username": "João silva",
+  "password": "joa01234",
+  "parentUserId": "id do superior aqui"
+}
+```
+
+### Login de Usuário
+
+Para autenticar o usuário e obter um token JWT, envie um POST para o endpoint `/auth/login` com o corpo da requisição como objeto json no seguinte formato:
+
+```json
+{
+  "username": "João silva",
+  "password": "joao1234"
+}
+```
+
+![Exemplo de login](./images/exemplo-login.png)
+
+Caso a autenticação seja bem sucedida você receberá um token no corpo da requisição que você pode informar como bearer token.
+
+![Exemplo de Retorno](./images/exemplo-response-login.png)
+
+obs: o token ainda não está sendo persistido como cookie (considere o projeto em andamento).
+
+### Utilização dos endpoint protegidos
+
+Supondo que você logou com sucesso e obteve o token no corpor da requisição, você poderá acessar o endpoints protgidos.
+
+Para isso é nescessário que inclua o token no cabeçalho `Authorization` da sua requisição com o prefixo `Bearer`.
+
+```bash
+curl -X GET http://localhost:3000/users/tree\
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+```
+
+Caso esteja usando o swagger clique em `Authorize`
+
+![Authorize](./images/Authorize.png)
+
+Logo em seguida cole o token no campo `bearer`
+
+![campo bearer](./images/bearer.png)
+
+## Como os diretorios estão estruturados
+
+• `src/`: Código fonte da aplicação.
+
+• `src/auth/`: Módulo responsável pela autenticação de usuários.
+
+• `src/users/`: Módulo para gerenciamento de usuários.
+
+• `src/migrations`: Scripts de migration do banco de dados.(Implementação futura)
+
+## Links úteis
+
+## Links Úteis
+
+- [Documentação do NestJS](https://docs.nestjs.com/)
+- [Documentação do TypeORM](https://typeorm.io/)
+- [Documentação do JWT](https://jwt.io/)
