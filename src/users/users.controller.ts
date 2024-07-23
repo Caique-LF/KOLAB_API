@@ -20,6 +20,13 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @Get('tree')
+  async findTree() {
+    return this.userService.findTree();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get(':id')
   async findUser(@Param('id') id: string) {
     const user = await this.userService.findUser(id);
@@ -53,12 +60,5 @@ export class UsersController {
   @Delete(':id')
   async delelteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @Get('tree')
-  async findTree() {
-    return this.userService.findTree();
   }
 }

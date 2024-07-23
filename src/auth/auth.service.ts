@@ -40,7 +40,7 @@ export class AuthService {
     const userExist = await this.usersService.findByUsername(
       this.createuserDto.username,
     );
-    if (userExist) {
+    if (userExist !== null) {
       throw new BadRequestException(
         'Nome de usuário já em uso. Por favor tente outro.',
       );
