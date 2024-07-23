@@ -9,24 +9,26 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dtos/update-user-dtos';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guards';
+import { JwtCookieGuard } from 'src/auth/guards/jwt-cookiesguards';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @UseGuards(JwtCookieGuard)
+  // @ApiBearerAuth()
+  @ApiCookieAuth()
   @Get('tree')
   async findTree() {
     return this.userService.findTree();
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @UseGuards(JwtCookieGuard)
+  @ApiCookieAuth()
   @Get(':id')
   async findUser(@Param('id') id: string) {
     const user = await this.userService.findUser(id);
@@ -44,8 +46,8 @@ export class UsersController {
     return this.userService.findAllUsers();
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @UseGuards(JwtCookieGuard)
+  @ApiCookieAuth()
   @Put()
   @Put(':id')
   async updateUser(
@@ -55,8 +57,9 @@ export class UsersController {
     return this.userService.updateUser(id, updateUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtCookieGuard)
   @ApiBearerAuth()
+  @ApiCookieAuth()
   @Delete(':id')
   async delelteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
