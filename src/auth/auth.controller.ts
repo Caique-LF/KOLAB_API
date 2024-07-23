@@ -23,11 +23,11 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'Autenticação de usuário' })
   @ApiBody({ type: LoginDto })
-  async login(@Req() req: Request, @Res() res: Response) {
+  async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const { user } = req;
     const token = await this.authService.login(user);
 
-    res.cookie('acess_token', token.acess_token, { httpOnly: true });
+    res.cookie('acess_token', token.acess_token);
     return res.status(HttpStatus.OK).json({ user, token: token.acess_token });
   }
 
