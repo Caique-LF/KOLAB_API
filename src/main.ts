@@ -14,7 +14,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('KOLAB_API_BACKEND')
-    .setDescription('*decrição*')
+    .setDescription(
+      'Esta API permite autenticar usuários, criar novos usuários e gerenciar sessões, além de permitir que seja obtida a arvore hierarquica dos usuários. Ela fornece endpoints para login e registro de usuários, garantindo a segurança através de autenticação baseada em JWT e cookies.',
+    )
     .setVersion('1.0')
     .addTag('')
     .addBearerAuth()
