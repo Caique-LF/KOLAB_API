@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { CreatUserDto } from 'src/users/dtos/create-user-dtos';
@@ -26,6 +34,14 @@ export class AuthController {
       },
       token: token.acess_token,
     };
+  }
+
+  @Post('logout')
+  logout(@Res() response: Response) {
+    response.clearCookie('jwt'); // Nome do cookie onde o token está armazenado
+    return response
+      .status(HttpStatus.OK)
+      .json({ message: 'Logout successful' });
   }
 
   @Post('register')
