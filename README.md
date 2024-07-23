@@ -90,11 +90,9 @@ Para autenticar o usuário e obter um token JWT, envie um POST para o endpoint `
 
 ![Exemplo de login](./images/exemplo-login.png)
 
-Caso a autenticação seja bem sucedida você receberá um token no corpo da requisição que você pode informar como bearer token.
+Caso a autenticação seja bem sucedida você receberá um token no corpo da requisição esse token será persistido automaticamente nos cookies do se navegador.
 
 ![Exemplo de Retorno](./images/exemplo-response-login.png)
-
-obs: o token ainda não está sendo persistido como cookie (considere o projeto em andamento).
 
 ### Utilização dos endpoint protegidos
 
@@ -112,7 +110,7 @@ Caso esteja usando o swagger clique em `Authorize`
 
 ![Authorize](./images/Authorize.png)
 
-Logo em seguida cole o token no campo `bearer`
+Logo em seguida clique no campo `cookie` e ensira o token.
 
 ![campo bearer](./images/bearer.png)
 
