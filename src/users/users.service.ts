@@ -39,11 +39,6 @@ export class UsersService {
 
   async findByUsername(username: string): Promise<User> {
     const user = await this.UserRespository.findOne({ where: { username } });
-
-    if (!user) {
-      return null;
-    }
-
     return user;
   }
 

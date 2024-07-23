@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -9,14 +13,13 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly createuserDto: CreatUserDto,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByUsername(username);
 
     if (!user) {
-      return null;
+      throw new NotFoundException('Nome de Usuário ou senha incorretos.');
     }
 
     const validatePass = await bcrypt.compare(pass, user.password);
@@ -36,18 +39,18 @@ export class AuthService {
     };
   }
 
-  async registerNewUser(user: any) {
+  async registerNewUser(createUserDto: CreatUserDto) {
     const userExist = await this.usersService.findByUsername(
-      this.createuserDto.username,
+      createUserDto.username,
     );
     if (userExist !== null) {
       throw new BadRequestException(
         'Nome de usuário já em uso. Por favor tente outro.',
       );
     }
-    user.password = await bcrypt.hash(user.password, 10);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
 
-    const newUser = this.usersService.createUser(user);
+    const newUser = this.usersService.createUser(createUserDto);
 
     return newUser;
   }
