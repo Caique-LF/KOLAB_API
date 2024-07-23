@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { CreatUserDto } from 'src/users/dtos/create-user-dtos';
@@ -24,11 +16,17 @@ export class AuthController {
   @ApiOperation({ summary: 'Autenticação de usuário' })
   @ApiBody({ type: LoginDto })
   async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const { user } = req;
+    const user = req.user;
     const token = await this.authService.login(user);
 
     res.cookie('acess_token', token.acess_token, { httpOnly: true });
-    return res.status(HttpStatus.OK).json({ user, token: token.acess_token });
+    return {
+      user: {
+        id: user,
+      },
+      token: token.acess_token,
+    };
+    // return { user }, { token: token.acess_token };
   }
 
   @Post('register')

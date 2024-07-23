@@ -57,7 +57,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get('/tree')
+  @Get('tree')
   async findTree() {
     return this.userService.findTree();
   }
