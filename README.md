@@ -58,7 +58,7 @@ npm run start:dev
 
 ### Registro de Usuário
 
-Para registrar um novo usuário, envie um POST para o endpoin `/auth/register` com o corpo da requisição como objeto json com o seguinte formato:
+Para registrar um novo usuário, envie um POST para o endpoint `/auth/register` com o corpo da requisição como objeto json com o seguinte formato:
 
 ```json
 {
@@ -90,15 +90,13 @@ Para autenticar o usuário e obter um token JWT, envie um POST para o endpoint `
 
 ![Exemplo de login](./images/exemplo-login.png)
 
-Caso a autenticação seja bem sucedida você receberá um token no corpo da requisição que você pode informar como bearer token.
+Caso a autenticação seja bem sucedida você receberá um token no corpo da requisição esse token será persistido automaticamente nos cookies do se navegador.
 
 ![Exemplo de Retorno](./images/exemplo-response-login.png)
 
-obs: o token ainda não está sendo persistido como cookie (considere o projeto em andamento).
-
 ### Utilização dos endpoint protegidos
 
-Supondo que você logou com sucesso e obteve o token no corpor da requisição, você poderá acessar o endpoints protgidos.
+Supondo que você logou com sucesso e obteve o token no corpor da requisição, você poderá acessar o endpoints protegidos.
 
 Para isso é nescessário que inclua o token no cabeçalho `Authorization` da sua requisição com o prefixo `Bearer`.
 
@@ -112,7 +110,7 @@ Caso esteja usando o swagger clique em `Authorize`
 
 ![Authorize](./images/Authorize.png)
 
-Logo em seguida cole o token no campo `bearer`
+Logo em seguida clique no campo `cookie` e ensira o token.
 
 ![campo bearer](./images/bearer.png)
 
@@ -133,3 +131,19 @@ Logo em seguida cole o token no campo `bearer`
 - [Documentação do NestJS](https://docs.nestjs.com/)
 - [Documentação do TypeORM](https://typeorm.io/)
 - [Documentação do JWT](https://jwt.io/)
+- [Dcumentação do MySql](https://dev.mysql.com/doc/)
+
+## Tecnologias usadas no projeto
+
+- **NestJS**: Framework para construir aplicações Node.js eficientes e escaláveis usando TypeScript.
+- **TypeScript**: Linguagem de programação que adiciona tipagem estática ao JavaScript.
+- **TypeORM**: Biblioteca ORM que permite trabalhar com bancos de dados relacionais de forma fácil.
+- **MySQL**: Sistema de gerenciamento de banco de dados relacional (RDBMS) utilizado para armazenar dados.
+- **bcrypt**: Biblioteca para criptografia de senhas.
+- **JWT (JSON Web Token)**: Padrão para transmitir informações seguras entre partes.
+- **Swagger (OpenAPI)**: Ferramenta para documentar e testar APIs RESTful.
+- **Insomnia**: Ferramenta para teste de APIs.
+- **Express**: Framework minimalista para Node.js utilizado pelo NestJS.
+- **Passport.js**: Middleware de autenticação para Node.js.
+
+Cada uma dessas tecnologias contribui para a criação de uma aplicação robusta, segura e fácil de manter.
