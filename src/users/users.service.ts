@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreatUserDto } from './dtos/create-user-dtos';
 import { User } from 'src/database/user.entity';
 import { UpdateUserDto } from './dtos/update-user-dtos';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -43,11 +44,13 @@ export class UsersService {
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.UserRespository.findOne({ where: { id: id } });
+    const user = await this.UserRespository.findOne({ where: { id } });
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
+
+    updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
 
     const transformedUpdateDto = {
       ...updateUserDto,
@@ -56,7 +59,9 @@ export class UsersService {
         : null,
     };
 
-    await this.UserRespository.update({ id }, transformedUpdateDto);
+    const Updateduser = { ...user, ...transformedUpdateDto };
+
+    await this.UserRespository.save(Updateduser);
 
     return this.UserRespository.findOne({ where: { id } });
   }
