@@ -48,7 +48,6 @@ export class UsersController {
 
   @UseGuards(JwtCookieGuard)
   @ApiCookieAuth()
-  @Put()
   @Put(':id')
   async updateUser(
     @Param('id') id: string,
