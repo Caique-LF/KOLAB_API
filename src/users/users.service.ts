@@ -76,26 +76,27 @@ export class UsersService {
   }
 
   async findTree(): Promise<User[]> {
-    const users = await this.UserRespository.find();
-    return this.buildTree(users);
+    const users = await this.UserRespository.find({
+      relations: ['parentUserId', 'children'],
+    });
+    return this.buildTree(users, null);
   }
 
-  private buildTree(users: User[]): User[] {
+  private buildTree(users: User[], parentId: string | null): User[] {
     const tree: User[] = [];
 
     for (const user of users) {
-      user.children = [];
-    }
+      if (
+        (parentId === null && user.parentUserId === null) ||
+        (user.parentUserId && user.parentUserId.id === parentId)
+      ) {
+        const children = this.buildTree(users, user.id);
+        user.children = children;
 
-    for (const user of users) {
-      if (user.parentUserId) {
-        for (const potentialParent of users) {
-          if (user.parentUserId.id === potentialParent.id) {
-            potentialParent.children.push(user);
-            break;
-          }
-        }
-      } else {
+        user.children.forEach((child) => {
+          delete child.parentUserId;
+        });
+
         tree.push(user);
       }
     }
