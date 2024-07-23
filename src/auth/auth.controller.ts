@@ -26,7 +26,6 @@ export class AuthController {
       },
       token: token.acess_token,
     };
-    // return { user }, { token: token.acess_token };
   }
 
   @Post('register')
