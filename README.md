@@ -292,18 +292,7 @@ Aqui estão as rotas disponíveis na API:
 
 • `src/migrations`: Scripts de migration do banco de dados.(Implementação futura)
 
-## Links úteis
-
-## Links Úteis
-
-- [Documentação do NestJS](https://docs.nestjs.com/)
-- [Documentação do TypeORM](https://typeorm.io/)
-- [Documentação do JWT](https://jwt.io/)
-- [Dcumentação do MySql](https://dev.mysql.com/doc/)
-
 ## Tecnologias usadas no projeto
-
-## Tecnologias Usadas
 
 - [NestJS](https://nestjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
