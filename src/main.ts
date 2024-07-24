@@ -19,7 +19,6 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addTag('')
-    .addBearerAuth()
     .addCookieAuth()
     .build();
 
