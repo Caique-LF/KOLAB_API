@@ -94,7 +94,7 @@ export class UsersService {
     return excludePassword(updatedUser);
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<any> {
     const user = await this.UserRespository.findOne({ where: { id: id } });
 
     if (!user) {
@@ -102,6 +102,8 @@ export class UsersService {
     }
 
     await this.UserRespository.delete({ id });
+
+    return { mensagem: 'usuário excluido' };
   }
 
   async findTree(): Promise<User[]> {
