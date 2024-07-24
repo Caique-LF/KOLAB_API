@@ -114,6 +114,174 @@ Logo em seguida clique no campo `cookie` e ensira o token.
 
 ![campo bearer](./images/bearer.png)
 
+## Como as Rotas estão estruturadas
+
+Aqui estão as rotas disponíveis na API:
+
+### **Autenticação**
+
+![Rotas autenticação](./images/rotas.auth.png)
+
+- **POST /auth/login**
+
+  - **Descrição:** Autentica o usuário e retorna um token JWT.
+  - **Corpo da Requisição:**
+    ```json
+    {
+      "username": "string",
+      "password": "string"
+    }
+    ```
+  - **Resposta de Sucesso:**
+    ```json
+    {
+      "user": {
+        "id": "string"
+      },
+      "token": "string"
+    }
+    ```
+  - **Resposta de Erro:**
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Nome de usuário ou senha incorreta."
+    }
+    ```
+
+- **POST /auth/register**
+  - **Descrição:** Registra um novo usuário.
+  - **Corpo da Requisição:**
+    ```json
+    {
+      "username": "string",
+      "password": "string",
+      "parentUserId": "string" // Opcional
+    }
+    ```
+  - **Resposta de Sucesso:**
+    ```json
+    {
+      "id": "string",
+      "username": "string",
+      "parentUserId": "string" // Opcional
+    }
+    ```
+  - **Resposta de Erro:**
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Nome de usuário já em uso. Por favor tente outro."
+    }
+    ```
+
+### **Usuários**
+
+![Rotas usuário](./images/rotas.users.png)
+
+- **GET /users**
+
+  - **Descrição:** Retorna uma lista de usuários.
+  - **Resposta de Sucesso:**
+    ```json
+    [
+      {
+        "id": "string",
+        "username": "string",
+        "parentUserId": "string" // Opcional
+      }
+    ]
+    ```
+
+- **GET /users/:id**
+
+  - **Descrição:** Retorna um usuário específico.
+  - **Resposta de Sucesso:**
+    ```json
+    {
+      "id": "string",
+      "username": "string",
+      "parentUserId": "string" // Opcional
+    }
+    ```
+  - **Resposta de Erro:**
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado"
+    }
+    ```
+
+- **PUT /users/:id**
+
+  - **Descrição:** Atualiza um usuário existente.
+  - **Corpo da Requisição:**
+    ```json
+    {
+      "username": "string",
+      "password": "string",
+      "parentUserId": "string" // Opcional
+    }
+    ```
+  - **Resposta de Sucesso:**
+    ```json
+    {
+      "id": "string",
+      "username": "string",
+      "parentUserId": "string" // Opcional
+    }
+    ```
+  - **Resposta de Erro:**
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado"
+    }
+    ```
+
+- **DELETE /users/:id**
+
+  - **Descrição:** Remove um usuário específico.
+  - **Resposta de Sucesso:**
+    ```json
+    {
+      "statusCode": 204,
+      "message": "Usuário deletado com sucesso"
+    }
+    ```
+  - **Resposta de Erro:**
+
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado"
+    }
+    ```
+
+    **GET /users/tree**
+
+  - **Descrição:** Retorna um objeto json contendo um array com a arvore hierarquica.
+  - **Resposta de Sucesso:**
+    ```json
+    {
+       [
+        {
+            "id": "string",
+            "username": "string",
+            "parentUserId": "string",
+            "children" : []
+        }
+      ]
+    }
+    ```
+  - **Resposta de Erro:**
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado"
+    }
+    ```
+
 ## Como os diretorios estão estruturados
 
 • `src/`: Código fonte da aplicação.
@@ -135,15 +303,24 @@ Logo em seguida clique no campo `cookie` e ensira o token.
 
 ## Tecnologias usadas no projeto
 
-- **NestJS**: Framework para construir aplicações Node.js eficientes e escaláveis usando TypeScript.
-- **TypeScript**: Linguagem de programação que adiciona tipagem estática ao JavaScript.
-- **TypeORM**: Biblioteca ORM que permite trabalhar com bancos de dados relacionais de forma fácil.
-- **MySQL**: Sistema de gerenciamento de banco de dados relacional (RDBMS) utilizado para armazenar dados.
-- **bcrypt**: Biblioteca para criptografia de senhas.
-- **JWT (JSON Web Token)**: Padrão para transmitir informações seguras entre partes.
-- **Swagger (OpenAPI)**: Ferramenta para documentar e testar APIs RESTful.
-- **Insomnia**: Ferramenta para teste de APIs.
-- **Express**: Framework minimalista para Node.js utilizado pelo NestJS.
-- **Passport.js**: Middleware de autenticação para Node.js.
+## Tecnologias Usadas
+
+- [NestJS](https://nestjs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TypeORM](https://typeorm.io/)
+- [MySQL](https://www.mysql.com/)
+- [JWT](https://jwt.io/)
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+- [Swagger](https://swagger.io/)
+
+## Documentação Adicional
+
+- [Documentação do MySQL](https://dev.mysql.com/doc/)
+- [Guia de Introdução ao NestJS](https://docs.nestjs.com/)
+- [Documentação do TypeORM](https://typeorm.io/)
+- [Guia de Uso do TypeScript](https://www.typescriptlang.org/docs/)
+- [JWT Authentication](https://jwt.io/introduction/)
+- [Documentação do bcrypt](https://www.npmjs.com/package/bcrypt)
+- [Documentação do Swagger](https://swagger.io/docs/)
 
 Cada uma dessas tecnologias contribui para a criação de uma aplicação robusta, segura e fácil de manter.
