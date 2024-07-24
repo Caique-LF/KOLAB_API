@@ -24,12 +24,7 @@ export class UsersService {
 
     const savedUser = await this.UserRespository.save(user);
 
-    const userInDB = await this.UserRespository.findOne({
-      where: { id: savedUser.id },
-      relations: ['parenUserId'],
-    });
-
-    return excludePassword(userInDB);
+    return excludePassword(savedUser);
   }
 
   async findUser(id: string): Promise<User> {
@@ -128,7 +123,7 @@ export class UsersService {
           delete child.parentUserId;
         });
 
-        tree.push(user);
+        tree.push(excludePassword(user));
       }
     }
 
