@@ -11,8 +11,9 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { CreatUserDto } from 'src/users/dtos/create-user-dtos';
 import { LocalAuthGuard } from './guards/local-guards';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dtos/login-dtos';
+import { JwtCookieGuard } from './guards/jwt-cookiesguards';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -36,6 +37,8 @@ export class AuthController {
     };
   }
 
+  @UseGuards(JwtCookieGuard)
+  @ApiCookieAuth()
   @Post('logout')
   logout(@Res() response: Response) {
     response.clearCookie('jwt'); // Nome do cookie onde o token está armazenado
