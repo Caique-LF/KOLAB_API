@@ -13,7 +13,7 @@ export class JwtCookieGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>();
-    const token = req.cookies['jwt']; // Nome do cookie onde o token está armazenado
+    const token = req.cookies['jwt']; // Nome do cookie onde estou armazenando o toeken
 
     if (!token) {
       throw new UnauthorizedException('Token not found in cookies');

@@ -5,6 +5,7 @@ import { CreatUserDto } from './dtos/create-user-dtos';
 import { User } from 'src/database/user.entity';
 import { UpdateUserDto } from './dtos/update-user-dtos';
 import * as bcrypt from 'bcrypt';
+import { excludePassword } from 'src/utils/exclude-pass.utils';
 
 @Injectable()
 export class UsersService {
@@ -21,17 +22,27 @@ export class UsersService {
         : null,
     });
 
-    return this.UserRespository.save(user);
+    const savedUser = await this.UserRespository.save(user);
+
+    const userInDB = await this.UserRespository.findOne({
+      where: { id: savedUser.id },
+      relations: ['parenUserId'],
+    });
+
+    return excludePassword(userInDB);
   }
 
   async findUser(id: string): Promise<User> {
-    const user = await this.UserRespository.findOneBy({ id });
+    const user = await this.UserRespository.findOne({
+      where: { id },
+      relations: ['parentUserId'],
+    });
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
 
-    return user;
+    return excludePassword(user);
   }
 
   async findByUsername(username: string): Promise<User> {
@@ -40,7 +51,17 @@ export class UsersService {
   }
 
   async findAllUsers(): Promise<User[]> {
-    return this.UserRespository.find();
+    const users = await this.UserRespository.find({
+      relations: ['parentUserId'],
+    });
+    const newArrayUsers: User[] = [];
+
+    for (const user of users) {
+      const userWithoutpass = excludePassword(user);
+      newArrayUsers.push(userWithoutpass);
+    }
+
+    return newArrayUsers;
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -59,11 +80,18 @@ export class UsersService {
         : null,
     };
 
-    const Updateduser = { ...user, ...transformedUpdateDto };
+    await this.UserRespository.save({ ...user, ...transformedUpdateDto });
 
-    await this.UserRespository.save(Updateduser);
+    const updatedUser = await this.UserRespository.findOne({
+      where: { id },
+      relations: ['parentUserId'],
+    });
 
-    return this.UserRespository.findOne({ where: { id } });
+    if (!updatedUser) {
+      throw new NotFoundException('Usuário não encontrado após a atualização');
+    }
+
+    return excludePassword(updatedUser);
   }
 
   async deleteUser(id: string): Promise<void> {
