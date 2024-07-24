@@ -41,10 +41,10 @@ export class AuthController {
   @ApiCookieAuth()
   @Post('logout')
   logout(@Res() response: Response) {
-    response.clearCookie('jwt'); // Nome do cookie onde o token está armazenado
+    response.clearCookie('jwt');
     return response
       .status(HttpStatus.OK)
-      .json({ message: 'Logout successful' });
+      .json({ message: 'Deslogado com sucesso' });
   }
 
   @Post('register')
