@@ -112,7 +112,7 @@ Caso esteja usando o swagger clique em `Authorize`
 
 Logo em seguida clique no campo `cookie` e ensira o token.
 
-![campo bearer](./images/bearer.png)
+![campo cokie](./images/exemplocokies.png)
 
 ## Como as Rotas estão estruturadas
 
@@ -120,7 +120,7 @@ Aqui estão as rotas disponíveis na API:
 
 ### **Autenticação**
 
-![Rotas autenticação](./images/rotas.auth.png)
+![Rotas autenticação](./images/rotaauth.png)
 
 - **POST /auth/login**
 
